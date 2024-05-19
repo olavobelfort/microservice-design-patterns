@@ -1,0 +1,8 @@
+C:\Users\olavo\Documents\projects\microservices-na-pratica\notification\src\main\java\com\ms\email\enums\StatusEmail.java
+C:\Users\olavo\Documents\projects\microservices-na-pratica\notification\src\main\java\com\ms\email\consumers\EmailConsumer.java
+C:\Users\olavo\Documents\projects\microservices-na-pratica\notification\src\main\java\com\ms\email\EmailApplication.java
+C:\Users\olavo\Documents\projects\microservices-na-pratica\notification\src\main\java\com\ms\email\services\EmailService.java
+C:\Users\olavo\Documents\projects\microservices-na-pratica\notification\src\main\java\com\ms\email\models\EmailModel.java
+C:\Users\olavo\Documents\projects\microservices-na-pratica\notification\src\main\java\com\ms\email\dtos\EmailRecordDto.java
+C:\Users\olavo\Documents\projects\microservices-na-pratica\notification\src\main\java\com\ms\email\repositories\EmailRepository.java
+C:\Users\olavo\Documents\projects\microservices-na-pratica\notification\src\main\java\com\ms\email\configs\RabbitMQConfig.java
