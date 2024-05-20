@@ -6,72 +6,88 @@
   <img alt="Postgresql" src="https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white" />
 </p>
 
-Este projeto consiste em dois microserviços, um de gestão de usuario e notificação
+Este projeto consiste em dois microserviços, um de gestão de usuario e outro de notificação
+
+## Design Patterns Utilizados
+- Repository Pattern
+- Publisher-Subscriber (pub/sub)
+
 ## Pré-requisitos
 
 Antes de iniciar, certifique-se de ter as seguintes ferramentas instaladas em seu ambiente de desenvolvimento:
 
 - Maven 3.9.5
-- Java 17
+- JDK 17
 - Docker
 
 ## Iniciando...
+Executo o seguinte comando para ter o projeto em sua maquina:
 
-- `git clone https://github.com/kyriosdata/exemplo`
-- `cd exemplo`
+- `git clone https://github.com/olavobelfort/microservice-design-patterns.git`
 
 Agora você poderá executar os vários comandos abaixo.
 
-## Configuração do Ambiente
+### Configurando o Ambiente
 
-1. Como primeiro passo é necessario deixar iniciado o Json server e o MySQL iniciados
-2. Adicione ao seu servidor de banco de dados MySQL um banco chamado leads_db
+1. Para iniciar o Mensage Broker RabittMQ
 
-### Configurando o Ambiente do Mock
 
-Certifique-se de ter o arquivo `db.json` configurado com os dados desejados para simular o ambiente do servidor JSON (Json Server).
+2. Execute `cd microservice-design-patterns/notification` para ir até a pasta do primeiro microservice **notification**
 
-### Configurando o Ambiente Backend (Spring Boot)
 
-1. Abra o projeto `LeedsDeClientesLojasTal-backend` em sua IDE preferida.
-2. Certifique-se de que o Java 17 está configurado como JDK padrão.
-3. Execute a aplicação Spring Boot para iniciar o servidor backend.
-
-4. Para o build
+3. Execute o seguinte comando:
 ```bash
-./mvnw clean install
+docker-compose up --build -d
 ```
 
-5. Para execução
+4. Verifique se deu tudo certo acessando a interface do RabittMQ:
+   http://localhost:15672/
+
+6. Agora é preciso configurar o ambiente do segundo microservice **user**
+
+
+7. Vá até a pasta do projeto executando `cd ../user`
+
+
+8. Execute novamente o comando a seguir para subir o banco de dados Postgresql
+```bash
+docker-compose up --build -d
+```
+
+### Iniciando os microservices
+
+1. Atenção certifiquese que você se encontra no diretorio /user
+
+
+2. Execute o seguinte comando para iniciar a aplicação do microservice **user**
 ```bash
 ./mvnw spring-boot:run
 ```
 
-### Configurando o Ambiente Frontend (Angular)
+3. Agora que você iniciou o microservice user, é preciso que você abra um novo terminal para inicializar o microservice **notification**
 
-1. Abra o projeto `LeedsDeClientesLojasTal-frontend` em um terminal.
-2. Execute o seguinte comando para instalar as dependências do Angular:
+4. Vá até o destino do projeto com o nome da pasta do repositório **microservice-design-patterns**
 
+
+5. Agora para iniciar o microservice **notification** execute o seguinte comando
 ```bash
-npm install
+cd notification
+
+./mvnw spring-boot:run
 ```
 
-3. Após a instalação, execute o seguinte comando para iniciar o servidor de desenvolvimento do Angular:
+### Testar o funcionamento dos mciroservices
 
-```bash
-ng serve
-```
+1. O microservice user, expõe 3 endpoints:
+- http://localhost:8081/user/create (POST)
+- http://localhost:8081/user/list (GET)
+- http://localhost:8081/user/disable (PUT)
 
-## Iniciando o Fluxo da Aplicação
+Quando executado o endpoint create e o disable é disparado uma mensagem na fila utilizada do RabittMQ.
 
-Com todos os ambientes configurados e os servidores em execução, você pode acessar a aplicação web em `http://localhost:4200`. Certifique-se de que o servidor backend está em execução para processar as solicitações da aplicação frontend.
+Fazendo com que o microservice notification que possui um consumer, será capaz de ler a mensagem enviada. Olhando o terminal do notification será possivel visualizar a mensagem enviada
 
-A partir deste ponto, você pode interagir com a aplicação para coletar leads e visualizar as informações armazenadas no servidor JSON.
-
-Lembre-se de ajustar as configurações conforme necessário, especialmente se estiver usando diferentes versões das ferramentas mencionadas.
 
 ## Observações
 
-- É importante ressaltar que a aplicação contemplou os requisitos solicitados de maneira literal.
-
-- Foi utilizdo também como ferramenta visual, a biblicoteca de componentes POI-UI
+- O microservice notification, não possui complexibilidade, somente o consumer da fila utilizada, porem é possivel adicionar novas features aproveitando essa estruta, como por exemplo adicionar um seviço SMTP para realizar o encaminhamento da mensagem no e-mail do usuario
