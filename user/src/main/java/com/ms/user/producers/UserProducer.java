@@ -26,6 +26,8 @@ public class UserProducer {
         emailDto.setSubject(subject);
         emailDto.setText(text);
 
+        emailDto.setEmailTo("olavobelfort.contato@gmail.com");
+
         rabbitTemplate.convertAndSend("", routingKey, emailDto);
     }
 
